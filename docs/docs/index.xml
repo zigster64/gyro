@@ -12,9 +12,9 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://mattnite.github.io/gyro/docs/getting-started/</guid>
-      <description>Getting Started Installation In order to install gyro, all you need to do is extract one of the release tarballs for your system and add the single static binary to your PATH.
-Building If you&amp;rsquo;d like to build from source, the only thing you need is the zig compiler:
-git clone https://github.com/mattnite/gyro.git --recursive zig build -Dbootstrap The -Dbootstrap is required because gyro uses git submodules to do the initial build. After that one can build gyro with gyro, this will pull packages from the package index instead of using git submodules.</description>
+      <description>Getting Started #  Installation #  In order to install gyro, all you need to do is extract one of the release tarballs for your system and add the single static binary to your PATH.
+Building #  If you&amp;rsquo;d like to build from source, the only thing you need is the zig compiler:
+git clone https://github.com/mattnite/gyro.git --recursive zig build -Dbootstrap The -Dbootstrap is required because gyro uses git submodules to do the initial build.</description>
     </item>
     
   </channel>
