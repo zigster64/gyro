@@ -1,0 +1,5 @@
+theme = "book"
+
+[params]
+BookTheme = 'auto'
+BookLogo = 'home.svg'
