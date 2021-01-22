@@ -1,6 +1,6 @@
 theme = "book"
 publishDir = "docs"
-baseurl = "https://mattnite.github.io/zkg"
+baseurl = "https://mattnite.github.io/gyro"
 languageCode = "en-us"
 
 [params]
