@@ -3,23 +3,23 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>/docs/getting-started/</loc>
+    <loc>https://mattnite.github.io/zkg/docs/getting-started/</loc>
   </url>
   
   <url>
-    <loc>/categories/</loc>
+    <loc>https://mattnite.github.io/zkg/categories/</loc>
   </url>
   
   <url>
-    <loc>/docs/</loc>
+    <loc>https://mattnite.github.io/zkg/docs/</loc>
   </url>
   
   <url>
-    <loc>/</loc>
+    <loc>https://mattnite.github.io/zkg/</loc>
   </url>
   
   <url>
-    <loc>/tags/</loc>
+    <loc>https://mattnite.github.io/zkg/tags/</loc>
   </url>
   
 </urlset>
