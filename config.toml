@@ -1,5 +1,8 @@
 theme = "book"
 publishDir = "docs"
+baseurl = "https://mattnite.github.io/zkg"
+languageCode = "en-us"
+
 [params]
 BookTheme = 'auto'
 BookLogo = 'home.svg'
