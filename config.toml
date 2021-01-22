@@ -1,5 +1,5 @@
 theme = "book"
-
+publishDir = "docs"
 [params]
 BookTheme = 'auto'
 BookLogo = 'home.svg'
