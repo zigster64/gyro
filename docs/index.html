@@ -15,7 +15,7 @@
 <link rel="manifest" href="/gyro/manifest.json">
 <link rel="icon" href="/gyro/favicon.png" type="image/x-icon">
 <link rel="stylesheet" href="/gyro/book.min.09a284f5a03730d86dde350d2c062b1514e48fdfebba7763941c0674ef65748f.css" integrity="sha256-CaKE9aA3MNht3jUNLAYrFRTkj9/rundjlBwGdO9ldI8=">
-<script defer src="/gyro/en.search.min.70131ffab257cc53e37f997c762e6b969e52445252b5b1d6a969182e31878961.js" integrity="sha256-cBMf&#43;rJXzFPjf5l8di5rlp5SRFJStbHWqWkYLjGHiWE="></script>
+<script defer src="/gyro/en.search.min.9b4c08228487589c64dd5849f51c1e77632d650d2f389a6bf8f44dfd3e223739.js" integrity="sha256-m0wIIoSHWJxk3VhJ9Rwed2MtZQ0vOJpr&#43;PRN/T4iNzk="></script>
 <link rel="alternate" type="application/rss+xml" href="https://mattnite.github.io/gyro/index.xml" title="" />
 <!--
 Made with Book Theme
@@ -33,7 +33,7 @@ https://github.com/alex-shpak/hugo-book
       
   <nav>
 <h2 class="book-brand">
-  <a href="/gyro"><img src="/gyro/home.svg" alt="Logo" /><span></span>
+  <a href="/gyro"><span></span>
   </a>
 </h2>
 
@@ -57,25 +57,6 @@ https://github.com/alex-shpak/hugo-book
 
   
 
-
-
-  
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="https://mattnite.github.io/gyro/docs/getting-started/" class="">Getting Started</a>
-  
-
-        </li>
-      
-    
-  </ul>
 
 
 
@@ -123,7 +104,22 @@ https://github.com/alex-shpak/hugo-book
   
   <aside class="hidden clearfix">
     
-  <nav id="TableOfContents"></nav>
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#installation">Installation</a></li>
+    <li><a href="#building">Building</a></li>
+    <li><a href="#consuming-packages">Consuming packages</a>
+      <ul>
+        <li><a href="#build-dependencies">Build dependencies</a></li>
+      </ul>
+    </li>
+    <li><a href="#producing-packages">Producing packages</a>
+      <ul>
+        <li><a href="#a-note-on-projects-and-dependencies">A note on projects and dependencies</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
 
 
   </aside>
@@ -159,6 +155,111 @@ combinator library) as a dependency. To build your project all that&rsquo;s need
 <p>If you want code that&rsquo;s not in the package index don&rsquo;t fret because I have you
 covered, if it&rsquo;s in a github repository, then all you have to do is <code>gyro add &lt;user&gt;/&lt;repo&gt;</code>, and if it&rsquo;s located elsewhere gyro supports downloading <code>tar.gz</code>
 archives over https (see &ldquo;Types of packages&rdquo; section for more information).</p>
+<h1 id="getting-started">
+  Getting Started
+  <a class="anchor" href="#getting-started">#</a>
+</h1>
+<h2 id="installation">
+  Installation
+  <a class="anchor" href="#installation">#</a>
+</h2>
+<p>In order to install gyro, all you need to do is extract one of the <a href="https://github.com/mattnite/gyro/releases">release
+tarballs</a> for your system and add
+the single static binary to your PATH.</p>
+<h2 id="building">
+  Building
+  <a class="anchor" href="#building">#</a>
+</h2>
+<p>If you&rsquo;d like to build from source, the only thing you need is the zig compiler:</p>
+<pre><code>git clone https://github.com/mattnite/gyro.git --recursive
+zig build -Dbootstrap
+</code></pre><p>The <code>-Dbootstrap</code> is required because gyro uses git submodules to do the
+initial build. After that one can build gyro with gyro, this will pull packages
+from the package index instead of using git submodules.</p>
+<pre><code>gyro build
+</code></pre><p>(Note: you might need to move the original gyro binary from the <code>zig-cache</code>
+first).  This command wraps <code>zig build</code>, so you can pass arguements like you
+normally would, like <code>gyro build test</code> to run your unit tests.</p>
+<h2 id="consuming-packages">
+  Consuming packages
+  <a class="anchor" href="#consuming-packages">#</a>
+</h2>
+<p>To find potential zig packages you&rsquo;d like to use:</p>
+<ul>
+<li><a href="https://astrolabe.pm">astrolabe.pm</a>, the default package index</li>
+<li><a href="https://zpm.random-projects.net">zpm</a>, a site that lists cool zig projects
+and where to find them</li>
+<li>search github for <code>#zig</code> and <code>#zig-package</code> tags</li>
+</ul>
+<p>If you want to use code from a package from astrolabe, then all you need to do
+is <code>gyro add &lt;package name&gt;</code>, else if you want to use a Github repository as a
+dependency then all that&rsquo;s required is <code>gyro add &lt;user&gt;/&lt;repo&gt;</code>.</p>
+<p>Packages are exposed to your <code>build.zig</code> file through a struct in
+<code>@import(&quot;gyro&quot;)</code>, and you can simply add them using a <code>addAllTo()</code> function,
+and then <code>@import()</code> in your code.</p>
+<p>Assume there is a <code>hello_world</code> package available to on the index, we&rsquo;d add it
+to our project like so:</p>
+<pre><code>gyro add hello_world
+</code></pre><p>build.zig:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-zig" data-lang="zig"><span style="color:#66d9ef">const</span> Builder <span style="color:#f92672">=</span> @import(<span style="color:#e6db74">&#34;std&#34;</span>).build.Builder;
+<span style="color:#66d9ef">const</span> pkgs <span style="color:#f92672">=</span> @import(<span style="color:#e6db74">&#34;gyro&#34;</span>).pkgs;
+
+<span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">fn</span> build(b<span style="color:#f92672">:</span> <span style="color:#f92672">*</span>Builder) <span style="color:#66d9ef">void</span> {
+    <span style="color:#66d9ef">const</span> exe <span style="color:#f92672">=</span> b.addExecutable(<span style="color:#e6db74">&#34;main&#34;</span>, <span style="color:#e6db74">&#34;src/main.zig&#34;</span>);
+    pkgs.addAllTo(exe);
+    exe.install();
+}
+</code></pre></div><p>main.zig:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-zig" data-lang="zig"><span style="color:#66d9ef">const</span> hw <span style="color:#f92672">=</span> @import(<span style="color:#e6db74">&#34;hello_world&#34;</span>);
+
+<span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">fn</span> main() <span style="color:#f92672">!</span><span style="color:#66d9ef">void</span> {
+    <span style="color:#66d9ef">try</span> hw.greet();
+}
+</code></pre></div><p>If you want to &ldquo;link&rdquo; a specific package to an object, the packages you depend
+on are accessed like <code>pkgs.&lt;package name&gt;</code> so in the example above you could
+instead do <code>exe.addPackage(pkgs.hello_world)</code>.</p>
+<h3 id="build-dependencies">
+  Build dependencies
+  <a class="anchor" href="#build-dependencies">#</a>
+</h3>
+<p>It&rsquo;s also possible to use packaged code in your <code>build.zig</code>, since this would
+only run at build time and most likely not required in your application or
+library these are kept separate from your regular dependencies in your project file.</p>
+<p>When you want to add a dependency as a build dep, all you need to do is add
+<code>--build-dep</code> to the gyro invocation. For example, let&rsquo;s assume I need to do
+some parsing with a package called <code>mecha</code>:</p>
+<pre><code>gyro add --build-dep mecha
+</code></pre><p>and in my <code>build.zig</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-zig" data-lang="zig"><span style="color:#66d9ef">const</span> Builder <span style="color:#f92672">=</span> @import(<span style="color:#e6db74">&#34;std&#34;</span>).build.Builder;
+<span style="color:#66d9ef">const</span> pkgs <span style="color:#f92672">=</span> @import(<span style="color:#e6db74">&#34;gyro&#34;</span>).pkgs;
+<span style="color:#66d9ef">const</span> mecha <span style="color:#f92672">=</span> @import(<span style="color:#e6db74">&#34;mecha&#34;</span>);
+
+<span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">fn</span> build(b<span style="color:#f92672">:</span> <span style="color:#f92672">*</span>Builder) <span style="color:#66d9ef">void</span> {
+    <span style="color:#66d9ef">const</span> exe <span style="color:#f92672">=</span> b.addExecutable(<span style="color:#e6db74">&#34;main&#34;</span>, <span style="color:#e6db74">&#34;src/main.zig&#34;</span>);
+    pkgs.addAllTo(exe);
+    exe.install();
+}
+</code></pre></div><h2 id="producing-packages">
+  Producing packages
+  <a class="anchor" href="#producing-packages">#</a>
+</h2>
+<p>The easiest way for an existing project to adopt gyro is to start by running
+<code>gyro init &lt;user&gt;/&lt;repo&gt;</code> to grab metadata from their Github project. From
+there the package maintainer to finish the init process by defining a few more things:</p>
+<ul>
+<li>the root file, it is <code>src/main.zig</code> by default</li>
+<li>file globs describing which files are actually part of the package. It is
+encouraged to include the license and readme, as well as testing code.</li>
+<li>any other packages if the repo exports multiple repos (and their
+corresponding root files of course)</li>
+<li>dependencies (see previous section).</li>
+</ul>
+<h3 id="a-note-on-projects-and-dependencies">
+  A note on projects and dependencies
+  <a class="anchor" href="#a-note-on-projects-and-dependencies">#</a>
+</h3>
+<p>A project may export multiple packages, each with their own root file. For the
+sake of simplicity all packages in a project share the same dependencies.</p>
 </article>
  
       
@@ -191,7 +292,22 @@ archives over https (see &ldquo;Types of packages&rdquo; section for more inform
     
     <aside class="book-toc">
       
-  <nav id="TableOfContents"></nav>
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#installation">Installation</a></li>
+    <li><a href="#building">Building</a></li>
+    <li><a href="#consuming-packages">Consuming packages</a>
+      <ul>
+        <li><a href="#build-dependencies">Build dependencies</a></li>
+      </ul>
+    </li>
+    <li><a href="#producing-packages">Producing packages</a>
+      <ul>
+        <li><a href="#a-note-on-projects-and-dependencies">A note on projects and dependencies</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
 
  
     </aside>

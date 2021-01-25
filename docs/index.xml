@@ -6,16 +6,5 @@
     <description>Recent content in Gyro Documentation on </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language><atom:link href="https://mattnite.github.io/gyro/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title></title>
-      <link>https://mattnite.github.io/gyro/docs/getting-started/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://mattnite.github.io/gyro/docs/getting-started/</guid>
-      <description>Getting Started #  Installation #  In order to install gyro, all you need to do is extract one of the release tarballs for your system and add the single static binary to your PATH.
-Building #  If you&amp;rsquo;d like to build from source, the only thing you need is the zig compiler:
-git clone https://github.com/mattnite/gyro.git --recursive zig build -Dbootstrap The -Dbootstrap is required because gyro uses git submodules to do the initial build.</description>
-    </item>
-    
   </channel>
 </rss>
