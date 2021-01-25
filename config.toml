@@ -5,4 +5,3 @@ languageCode = "en-us"
 
 [params]
 BookTheme = 'auto'
-BookLogo = 'home.svg'
