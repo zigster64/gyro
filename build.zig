@@ -76,6 +76,7 @@ pub fn build(b: *Builder) !void {
     if (target.abi == null) {
         target.abi = switch (std.builtin.os.tag) {
             .windows => .gnu,
+            .freebsd, .openbsd, .netbsd, .dragonfly => .none,
             else => .musl,
         };
     }
